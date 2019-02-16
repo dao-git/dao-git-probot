@@ -25,7 +25,7 @@ module.exports = app => {
           bodyComment += "@"+contributor.login+" "
         })
       })
-      bodyComment += "\n please vote at https://oneclickdapp.com/status-picnic/ \n with *pull request id*: "
+      bodyComment += "\n please vote at https://oneclickdapp.com/good-lithium/ \n with *pull request id*: "
       +pull_request_id
       +"\n and *repo id*: "
       + hex_repo_id
