@@ -4,9 +4,8 @@ const web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io
 module.exports = app => {
   // Your code here
   app.log('Yay, the app was loaded!')
-  app.log(web3.utils.fromAscii('dao-git/dao-git-test'))
 
-  app.on('pull_request.opened', async context => {
+  app.on(['pull_request.opened', 'pull_request.reopened'], async context => {
       var bodyComment = "Hi \n"
       var pull_request_id = context.payload.pull_request.number
       var repo_id = context.payload.pull_request.head.repo.full_name
@@ -17,7 +16,6 @@ module.exports = app => {
       const repo = split_repo_id[1]
       app.log(hex_repo_id)
       const anon = 0; //We dont want to out anonymous contributors
-
       const  contributors = await context.github.repos.listContributors({
         owner, repo, anon
       }).then(({data}) => {
@@ -29,8 +27,11 @@ module.exports = app => {
       +pull_request_id
       +"\n and *repo id*: "
       + hex_repo_id
-
       const comment = context.issue({body: bodyComment})
       return context.github.issues.createComment(comment)
+  })
+
+  app.on('issue_comment.created', async context => {
+    app.log("comment was made")
   })
 }
