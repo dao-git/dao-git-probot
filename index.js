@@ -22,10 +22,10 @@ module.exports = app => {
           bodyComment += "@"+contributor.login+" "
         })
       })
-      bodyComment += "\n please vote at https://oneclickdapp.com/good-lithium/ \n with *pull request id*: "
-      +pull_request_id
-      +"\n and *repo id*: "
-      + hex_repo_id
+      bodyComment += "\n please vote at https://dao-git.github.io/fe/?repo="
+                  +hex_repo_id
+                  +"&pr="
+                  +pull_request_id
       const comment = context.issue({body: bodyComment})
       return context.github.issues.createComment(comment)
   })
@@ -70,8 +70,8 @@ module.exports = app => {
         const base = 'master'
         const number = pull_request_id
         context.github.pullRequests.merge({
-          owner, 
-          repo, 
+          owner,
+          repo,
           number
         })
       }
