@@ -2,6 +2,19 @@
 
 > A GitHub App built with [Probot](https://github.com/probot/probot) that A Probot app
 
+## How to Contribute
+
+1. Get whitelisted here https://github.com/dao-git/dao-git-probot/issues/2
+2. Make a pull request with your changes
+3. Wait for contributors to vote (be sure to vote yourself!)
+4. Once `votingThreshold` is met, make a comment in the pull request to trigger the bot to merge.
+
+## Voting mechanics
+
+| constant | value |
+|---------------| -------- |
+| `votingThreshold` | 1 |
+
 ## Setup
 
 ```sh
