@@ -1,5 +1,7 @@
 # dao-git-probot
 
+### Made at ETHDenever2019, check out our submission [here](https://kauri.io/article/a20c2d43ab954852a48227c5dd4eed99/v6/allow-your-community-to-manage-your-code-using-a-dao!)!
+
 > A GitHub App built with [Probot](https://github.com/probot/probot) that A Probot app
 
 ## How to Contribute
