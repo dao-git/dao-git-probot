@@ -1,6 +1,6 @@
 const Web3 = require('web3')
 const web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/'))
-const contract_address = '0x3538716fd0f6bf656cbf12506ba4cc73979d3503';
+const contract_address = '0xD9A37024b41f0c13cF85eeADcaE257181b965da3';
 
 module.exports = app => {
   app.log('Yay, the app was loaded!')
