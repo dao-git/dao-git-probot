@@ -7,7 +7,7 @@ module.exports = app => {
   app.on(['pull_request.opened', 'pull_request.reopened'], async context => {
       var bodyComment = "Hi \n"
       var pull_request_id = context.payload.pull_request.number
-      var repo_id = context.payload.pull_request.head.repo.full_name
+      var repo_id = context.payload.repository.full_name
       app.log(repo_id)
       var hex_repo_id = web3.utils.fromAscii(repo_id);
       var split_repo_id = repo_id.split('/')
