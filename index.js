@@ -5,7 +5,7 @@ module.exports = app => {
   app.log('Yay, the app was loaded!')
 
   app.on(['pull_request.opened', 'pull_request.reopened'], async context => {
-      var bodyComment = "Hi \n"
+      var bodyComment = "Hello \n"
       var pull_request_id = context.payload.pull_request.number
       var repo_id = context.payload.repository.full_name
       app.log(repo_id)
