@@ -27,9 +27,9 @@ module.exports = app => {
                   +hex_repo_id
                   +"&pr="
                   +pull_request_id
-                  +")."
                   +"&contract="
                   +contract_address
+                  +")."
       const comment = context.issue({body: bodyComment})
       return context.github.issues.createComment(comment)
   })
