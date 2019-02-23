@@ -22,10 +22,11 @@ module.exports = app => {
           bodyComment += "@"+contributor.login+" "
         })
       })
-      bodyComment += "\n please vote at https://dao-git.github.io/fe/?repo="
+      bodyComment += "\n please vote [here](https://dao-git.github.io/fe/?repo="
                   +hex_repo_id
                   +"&pr="
                   +pull_request_id
+                  +")."
       const comment = context.issue({body: bodyComment})
       return context.github.issues.createComment(comment)
   })
