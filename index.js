@@ -15,7 +15,7 @@ module.exports = app => {
     const repo = splitRepoId[1]
     app.log(hexRepoId)
     const anon = 0 // We dont want to out anonymous contributors
-    const contributors = await context.github.repos.listContributors({
+    await context.github.repos.listContributors({
       owner, repo, anon
     }).then(({ data }) => {
       data.map(contributor => {
@@ -68,7 +68,6 @@ module.exports = app => {
         var splitRepoId = repoId.split('/')
         const owner = splitRepoId[0]
         const repo = splitRepoId[1]
-        const base = 'master'
         const number = pullRequestId
         context.github.pullRequests.merge({
           owner,
