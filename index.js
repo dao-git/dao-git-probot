@@ -6,23 +6,23 @@ module.exports = app => {
   app.log('Yay, the app was loaded!')
 
   app.on(['pull_request.opened', 'pull_request.reopened'], async context => {
-      var bodyComment = "Hello! \n"
-      var pull_request_id = context.payload.pull_request.number
-      var repo_id = context.payload.repository.full_name
-      app.log(repo_id)
-      var hex_repo_id = web3.utils.fromAscii(repo_id);
-      var split_repo_id = repo_id.split('/')
-      const owner = split_repo_id[0]
-      const repo = split_repo_id[1]
-      app.log(hex_repo_id)
-      const anon = 0; //We dont want to out anonymous contributors
-      const  contributors = await context.github.repos.listContributors({
-        owner, repo, anon
-      }).then(({data}) => {
-        data.map(contributor => {
-          bodyComment += "@"+contributor.login+" "
-        })
+    var bodyComment = 'Hello, \n'
+    var pullRequestId = context.payload.pull_request.number
+    var repoId = context.payload.repository.full_name
+    app.log(repoId)
+    var hexRepoId = web3.utils.fromAscii(repoId)
+    var splitRepoId = repoId.split('/')
+    const owner = splitRepoId[0]
+    const repo = splitRepoId[1]
+    app.log(hexRepoId)
+    const anon = 0 // We dont want to out anonymous contributors
+    await context.github.repos.listContributors({
+      owner, repo, anon
+    }).then(({ data }) => {
+      data.map(contributor => {
+        bodyComment += '@' + contributor.login + ' '
       })
+
       bodyComment += "\n please vote [here](https://dao-git.github.io/front-end/"
                   +"?repo="
                   +hex_repo_id
@@ -38,42 +38,41 @@ module.exports = app => {
   app.on('issue_comment.created', async context => {
  
     var contract = new web3.eth.Contract(
-	[{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_repoId",
-				"type": "bytes32"
-			},
-			{
-				"name": "_pullRequestId",
-				"type": "uint256"
-			}
-		],
-		"name": "isPassing",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
-], contract_address);
-    app.log(contract_address)
-    var pull_request_id = context.payload.issue.number
-    var repo_id = context.payload.repository.full_name
-    var hex_repo_id = web3.utils.fromAscii(repo_id);
-    contract.methods.isPassing(hex_repo_id, pull_request_id).call().then(result => {
-      if(result){
+      [{
+        'constant': true,
+        'inputs': [
+          {
+            'name': '_repoId',
+            'type': 'bytes32'
+          },
+          {
+            'name': '_pullRequestId',
+            'type': 'uint256'
+          }
+        ],
+        'name': 'isPassing',
+        'outputs': [
+          {
+            'name': '',
+            'type': 'bool'
+          }
+        ],
+        'payable': false,
+        'stateMutability': 'view',
+        'type': 'function'
+      }
+      ], contractAddress)
+    app.log(contractAddress)
+    var pullRequestId = context.payload.issue.number
+    var repoId = context.payload.repository.full_name
+    var hexRepoId = web3.utils.fromAscii(repoId)
+    contract.methods.isPassing(hexRepoId, pullRequestId).call().then(result => {
+      if (result) {
         app.log(result)
-        var split_repo_id = repo_id.split('/')
-        const owner = split_repo_id[0]
-        const repo = split_repo_id[1]
-        const base = 'master'
-        const number = pull_request_id
+        var splitRepoId = repoId.split('/')
+        const owner = splitRepoId[0]
+        const repo = splitRepoId[1]
+        const number = pullRequestId
         context.github.pullRequests.merge({
           owner,
           repo,
