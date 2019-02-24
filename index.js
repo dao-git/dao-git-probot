@@ -120,7 +120,7 @@ module.exports = app => {
             ").";
           const comment = context.issue({ body: bodyComment });
           // tweet out the open PR
-          client.post('statuses/update', {status: `Pull request opened here https://github.com/${context.payload.repository.full_name}/pulls !`}, (err, tweet, res) => {
+          client.post('statuses/update', {status: `Pull request opened here https://github.com/${context.payload.repository.full_name}!`}, (err, tweet, res) => {
             if(err) throw err
             app.log(tweet)
             app.log(res)
