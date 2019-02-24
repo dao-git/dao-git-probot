@@ -23,7 +23,7 @@ module.exports = app => {
           bodyComment += "@"+contributor.login+" "
         })
       })
-      bodyComment += "\n please vote [here](https://dao-git.github.io/frontend/"
+      bodyComment += "\n please vote [here](https://dao-git.github.io/front-end/"
                   +"?repo="
                   +hex_repo_id
                   +"&pr="
