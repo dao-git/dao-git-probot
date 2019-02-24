@@ -63,14 +63,9 @@ contract_interface = [
 
 module.exports = app => {
   app.log("Yay, the app was loaded!");
-  app.log(process.env.CONSUMER_KEY);
+
   app.on(["pull_request.opened", "pull_request.reopened"], async context => {
 
-    client.post('statuses/update', {status: `Pull request opened in ${context.payload.repository.full_name}!\n-`}, (err, tweet, res) => {
-      if(err) throw err
-      app.log(tweet)
-      app.log(res)
-    });
     //gather contributors
     var repo_id = context.payload.repository.full_name;
     var hex_repo_id = web3.utils.fromAscii(repo_id);
@@ -111,8 +106,6 @@ module.exports = app => {
           contract_address +
           ") to set the voting threshold and complete setup.";
           const noRepoComment = context.issue({ body: bodyComment });
-
-
           return context.github.issues.createComment(noRepoComment);
         } else {
           app.log("repo initialized");
@@ -126,6 +119,12 @@ module.exports = app => {
             contract_address +
             ").";
           const comment = context.issue({ body: bodyComment });
+          // tweet out the open PR
+          client.post('statuses/update', {status: `Pull request opened in ${context.payload.repository.full_name}!`}, (err, tweet, res) => {
+            if(err) throw err
+            app.log(tweet)
+            app.log(res)
+          });
           return  context.github.issues.createComment(comment);
         }
       }
@@ -157,6 +156,12 @@ module.exports = app => {
             owner,
             repo,
             number
+          });
+          // tweet out the merge
+          client.post('statuses/update', {status: `Pull request merged in ${context.payload.repository.full_name}!`}, (err, tweet, res) => {
+            if(err) throw err
+            app.log(tweet)
+            app.log(res)
           });
         }
       });
