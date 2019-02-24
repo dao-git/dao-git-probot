@@ -66,7 +66,11 @@ module.exports = app => {
         if (result) {
           app.log(result);
           // Check if repo has been initialized
-          if (result[1] > 0) {
+          if (result[1] === 0) {
+            var bodyComment = "This repo has not be set up yet.";
+            const comment = context.issue({ body: bodyComment });
+            return context.github.issues.createComment(comment);
+          } else {
             var bodyComment = "Hello contributors! \n";
             var pull_request_id = context.payload.pull_request.number;
             app.log(repo_id);
