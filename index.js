@@ -56,6 +56,7 @@ module.exports = app => {
   app.log("Yay, the app was loaded!");
 
   app.on(["pull_request.opened", "pull_request.reopened"], async context => {
+    //gather contributors
     var repo_id = context.payload.repository.full_name;
     var hex_repo_id = web3.utils.fromAscii(repo_id);
     var bodyComment = "Hello contributors! \n";
@@ -78,18 +79,17 @@ module.exports = app => {
         });
       });
 
-  
+   //check if repo has been initialized
     var contract = new web3.eth.Contract(contract_interface, contract_address);
     contract.methods
     .repo(hex_repo_id)
     .call()
     .then(result => {
       if (result) {
-        // Check if repo has been initialized
-        if (result[1] == 0) {
+        if (result[1] == 0) { //voting threshold
           bodyComment += "\n This repo has not be set up yet. ";
           bodyComment +=
-          "Please click [here](https://dao-git.github.io/front-end/initialize" +
+          "Please click [here](https://dao-git.github.io/front-end/initialize.html" +
           "?repo=" +
           hex_repo_id +
           "&contract=" +
@@ -100,7 +100,7 @@ module.exports = app => {
         } else {
           app.log("repo initialized");
           bodyComment +=
-            "\n please vote [here](https://dao-git.github.io/front-end/" +
+            "\n Please vote on this pull request [here](https://dao-git.github.io/front-end/" +
             "?repo=" +
             hex_repo_id +
             "&pr=" +
@@ -117,6 +117,8 @@ module.exports = app => {
    return;
   });
 
+
+  //check if voting threshold is passed on every comment
   app.on("issue_comment.created", async context => {
     var contract = new web3.eth.Contract(contract_interface, contract_address);
     app.log(contract_address);
