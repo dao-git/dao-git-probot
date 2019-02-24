@@ -77,7 +77,7 @@ module.exports = app => {
           const noRepoComment = context.issue({ body: bodyNoRepoComment });
           return context.github.issues.createComment(noRepoComment);
         } else {
-          app.log("repo initialized );
+          app.log("repo initialized");
           var bodyComment = "Hello contributors! \n";
           var pull_request_id = context.payload.pull_request.number;
           app.log(repo_id);
@@ -113,7 +113,7 @@ module.exports = app => {
         }
     }
     else{
-      app.log("no result from initilization check");
+      app.log("no result from initialization check");
       app.log(result);
     }
   });
