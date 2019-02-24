@@ -90,11 +90,11 @@ module.exports = app => {
 
         app.log(result[1]);
         // Check if repo has been initialized
-        if (result[1] === 0) {
+        if (result[1] == 0) {
           app.log("no init");
 
-          var bodyNoRepoComment = "This repo has not be set up yet.";
-          const noRepoComment = context.issue({ body: bodyNoRepoComment });
+          bodyComment += "\n This repo has not be set up yet.";
+          const noRepoComment = context.issue({ body: bodyComment });
           return context.github.issues.createComment(noRepoComment);
         } else {
           app.log("repo initialized");
@@ -114,11 +114,7 @@ module.exports = app => {
 
         }
     }
-    else{
-      app.log("no result from initialization check");
-      app.log(result);
-    }
-  });
+     });
 
    return;
   });
