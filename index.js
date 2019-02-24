@@ -157,7 +157,7 @@ module.exports = app => {
             number
           });
           // tweet out the merge
-          client.post('statuses/update', {status: `Pull request merged in here https://github.com/${context.payload.repository.full_name}!`}, (err, tweet, res) => {
+          client.post('statuses/update', {status: `Pull request merged in https://github.com/${context.payload.repository.full_name}!`}, (err, tweet, res) => {
             if(err) throw err
             app.log(tweet)
             app.log(res)
