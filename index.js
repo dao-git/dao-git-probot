@@ -87,14 +87,14 @@ module.exports = app => {
     .then(result => {
       if (result) {
         if (result[1] == 0) { //voting threshold
-          bodyComment += "\n This repo has not be set up yet. ";
+          bodyComment += "\n This repository has not been initialized yet. ";
           bodyComment +=
           "Please click [here](https://dao-git.github.io/front-end/initialize.html" +
           "?repo=" +
           hex_repo_id +
           "&contract=" +
           contract_address +
-          ") to initialize.";
+          ") to set the voting threshold and complete setup.";
           const noRepoComment = context.issue({ body: bodyComment });
           return context.github.issues.createComment(noRepoComment);
         } else {
@@ -117,8 +117,7 @@ module.exports = app => {
    return;
   });
 
-
-  //check if voting threshold is passed on every comment
+  //check if voting threshold is passed on every comment, if so, merge
   app.on("issue_comment.created", async context => {
     var contract = new web3.eth.Contract(contract_interface, contract_address);
     app.log(contract_address);
