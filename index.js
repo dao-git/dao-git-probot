@@ -1,8 +1,17 @@
 const Web3 = require("web3");
+const Twitter = require('twitter')
 const web3 = new Web3(
   new Web3.providers.HttpProvider("https://rinkeby.infura.io/")
 );
 const contract_address = "0xD9A37024b41f0c13cF85eeADcaE257181b965da3";
+
+var client = new Twitter({
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  access_token_key: process.env.ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET
+})
+
 contract_interface = [
   {
     constant: true,
@@ -56,6 +65,7 @@ module.exports = app => {
   app.log("Yay, the app was loaded!");
 
   app.on(["pull_request.opened", "pull_request.reopened"], async context => {
+
     //gather contributors
     var repo_id = context.payload.repository.full_name;
     var hex_repo_id = web3.utils.fromAscii(repo_id);
@@ -109,6 +119,12 @@ module.exports = app => {
             contract_address +
             ").";
           const comment = context.issue({ body: bodyComment });
+          // tweet out the open PR
+          client.post('statuses/update', {status: `Pull request opened here https://github.com/${context.payload.repository.full_name}!`}, (err, tweet, res) => {
+            if(err) throw err
+            app.log(tweet)
+            app.log(res)
+          });
           return  context.github.issues.createComment(comment);
         }
       }
@@ -139,6 +155,12 @@ module.exports = app => {
             owner,
             repo,
             number
+          });
+          // tweet out the merge
+          client.post('statuses/update', {status: `Pull request merged in here https://github.com/${context.payload.repository.full_name}!`}, (err, tweet, res) => {
+            if(err) throw err
+            app.log(tweet)
+            app.log(res)
           });
         }
       });
