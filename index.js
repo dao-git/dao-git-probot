@@ -72,7 +72,9 @@ module.exports = app => {
       })
       .then(({ data }) => {
         data.map(contributor => {
+          if (contributor.login !='dao-git-probot[bot]'){
           bodyComment += "@" + contributor.login + " ";
+          }
         });
       });
 
@@ -87,7 +89,7 @@ module.exports = app => {
         if (result[1] == 0) {
           bodyComment += "\n This repo has not be set up yet. ";
           bodyComment +=
-          "\n Please click [here](https://dao-git.github.io/front-end/initialize" +
+          "Please click [here](https://dao-git.github.io/front-end/initialize" +
           "?repo=" +
           hex_repo_id +
           "&contract=" +
@@ -107,7 +109,6 @@ module.exports = app => {
             contract_address +
             ").";
           const comment = context.issue({ body: bodyComment });
-          app.log(bodyComment);
           return  context.github.issues.createComment(comment);
         }
       }
