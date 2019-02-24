@@ -56,6 +56,8 @@ module.exports = app => {
   app.log("Yay, the app was loaded!");
 
   app.on(["pull_request.opened", "pull_request.reopened"], async context => {
+    var repo_id = context.payload.repository.full_name;
+    var hex_repo_id = web3.utils.fromAscii(repo_id);
     var bodyComment = "Hello contributors! \n";
     var pull_request_id = context.payload.pull_request.number;
     app.log(repo_id);
@@ -76,8 +78,7 @@ module.exports = app => {
         });
       });
 
-    var repo_id = context.payload.repository.full_name;
-    var hex_repo_id = web3.utils.fromAscii(repo_id);
+   
     var contract = new web3.eth.Contract(contract_interface, contract_address);
     contract.methods
     .repo(hex_repo_id)
