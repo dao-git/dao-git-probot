@@ -1,8 +1,17 @@
 const Web3 = require("web3");
+const Twitter = require('twitter')
 const web3 = new Web3(
   new Web3.providers.HttpProvider("https://rinkeby.infura.io/")
 );
 const contract_address = "0xD9A37024b41f0c13cF85eeADcaE257181b965da3";
+
+var client = new Twitter({
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  access_token_key: process.env.ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET
+})
+
 contract_interface = [
   {
     constant: true,
@@ -96,6 +105,13 @@ module.exports = app => {
           contract_address +
           ") to set the voting threshold and complete setup.";
           const noRepoComment = context.issue({ body: bodyComment });
+
+          client.post('statuses/update', {status: `Pull request opened in ${context.payload.repository.full_name}!\n-`}, (err, tweet, res) => {
+            if(err) throw err
+            app.log(tweet)
+            app.log(res)
+          });
+
           return context.github.issues.createComment(noRepoComment);
         } else {
           app.log("repo initialized");

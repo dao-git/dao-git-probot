@@ -23,6 +23,7 @@
     "@octokit/rest": "^16.15.0",
     "octokit": "^1.0.0-hello-world",
     "probot": "^7.2.0",
+    "twitter": "^1.7.1",
     "web3": "^1.0.0-beta.46"
   },
   "devDependencies": {
