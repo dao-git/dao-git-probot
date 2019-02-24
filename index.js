@@ -71,9 +71,12 @@ module.exports = app => {
           var bodyNoRepoComment = "This repo has not be set up yet.";
           const noRepoComment = context.issue({ body: bodyNoRepoComment });
           return context.github.issues.createComment(noRepoComment);
-        } 
+        } else{
+          app.log(result);
+        }
     }
   });
+
 
     app.log("passed init check");
 
@@ -109,7 +112,7 @@ module.exports = app => {
     const comment = context.issue({ body: bodyComment });
     app.log(bodyComment);
    
-    return;
+    return  context.github.issues.createComment(comment);;
   });
 
   app.on("issue_comment.created", async context => {
