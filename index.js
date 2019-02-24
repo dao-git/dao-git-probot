@@ -83,22 +83,20 @@ module.exports = app => {
     .call()
     .then(result => {
       if (result) {
-
-       app.log("got result from initialization check");
-
-        app.log(result);
-
-        app.log(result[1]);
         // Check if repo has been initialized
         if (result[1] == 0) {
-          app.log("no init");
-
-          bodyComment += "\n This repo has not be set up yet.";
+          bodyComment += "\n This repo has not be set up yet. ";
+          bodyComment +=
+          "\n Please click [here](https://dao-git.github.io/front-end/initialize" +
+          "?repo=" +
+          hex_repo_id +
+          "&contract=" +
+          contract_address +
+          ") to initialize.";
           const noRepoComment = context.issue({ body: bodyComment });
           return context.github.issues.createComment(noRepoComment);
         } else {
           app.log("repo initialized");
-
           bodyComment +=
             "\n please vote [here](https://dao-git.github.io/front-end/" +
             "?repo=" +
@@ -111,10 +109,9 @@ module.exports = app => {
           const comment = context.issue({ body: bodyComment });
           app.log(bodyComment);
           return  context.github.issues.createComment(comment);
-
         }
-    }
-     });
+      }
+    });
 
    return;
   });
