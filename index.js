@@ -56,6 +56,25 @@ module.exports = app => {
   app.log("Yay, the app was loaded!");
 
   app.on(["pull_request.opened", "pull_request.reopened"], async context => {
+    var bodyComment = "Hello contributors! \n";
+    var pull_request_id = context.payload.pull_request.number;
+    app.log(repo_id);
+    var split_repo_id = repo_id.split("/");
+    const owner = split_repo_id[0];
+    const repo = split_repo_id[1];
+    app.log(hex_repo_id);
+    const anon = 0; //We dont want to out anonymous contributors
+    const contributors = await context.github.repos
+      .listContributors({
+        owner,
+        repo,
+        anon
+      })
+      .then(({ data }) => {
+        data.map(contributor => {
+          bodyComment += "@" + contributor.login + " ";
+        });
+      });
 
     var repo_id = context.payload.repository.full_name;
     var hex_repo_id = web3.utils.fromAscii(repo_id);
@@ -78,25 +97,7 @@ module.exports = app => {
           return context.github.issues.createComment(noRepoComment);
         } else {
           app.log("repo initialized");
-          var bodyComment = "Hello contributors! \n";
-          var pull_request_id = context.payload.pull_request.number;
-          app.log(repo_id);
-          var split_repo_id = repo_id.split("/");
-          const owner = split_repo_id[0];
-          const repo = split_repo_id[1];
-          app.log(hex_repo_id);
-          const anon = 0; //We dont want to out anonymous contributors
-          const contributors = await context.github.repos
-            .listContributors({
-              owner,
-              repo,
-              anon
-            })
-            .then(({ data }) => {
-              data.map(contributor => {
-                bodyComment += "@" + contributor.login + " ";
-              });
-            });
+
           bodyComment +=
             "\n please vote [here](https://dao-git.github.io/front-end/" +
             "?repo=" +
