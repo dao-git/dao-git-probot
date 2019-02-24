@@ -56,9 +56,30 @@ module.exports = app => {
   app.log("Yay, the app was loaded!");
 
   app.on(["pull_request.opened", "pull_request.reopened"], async context => {
+
     var repo_id = context.payload.repository.full_name;
     var hex_repo_id = web3.utils.fromAscii(repo_id);
     var contract = new web3.eth.Contract(contract_interface, contract_address);
+    contract.methods
+    .repo(hex_repo_id)
+    .call()
+    .then(result => {
+      if (result) {
+        app.log(result);
+        // Check if repo has been initialized
+        if (result[1] === 0) {
+          var bodyNoRepoComment = "This repo has not be set up yet.";
+          const noRepoComment = context.issue({ body: bodyNoRepoComment });
+          return context.github.issues.createComment(noRepoComment);
+        } else {
+          return context.github.issues.createComment(comment);
+        }
+      } else {
+        app.log("failed result check");
+      }
+    });
+
+
     var bodyComment = "Hello contributors! \n";
     var pull_request_id = context.payload.pull_request.number;
     app.log(repo_id);
@@ -89,24 +110,7 @@ module.exports = app => {
       ").";
     const comment = context.issue({ body: bodyComment });
     app.log(bodyComment);
-    contract.methods
-      .repo(hex_repo_id)
-      .call()
-      .then(result => {
-        if (result) {
-          app.log(result);
-          // Check if repo has been initialized
-          if (result[1] === 0) {
-            var bodyNoRepoComment = "This repo has not be set up yet.";
-            const noRepoComment = context.issue({ body: bodyNoRepoComment });
-            return context.github.issues.createComment(noRepoComment);
-          } else {
-            return context.github.issues.createComment(comment);
-          }
-        } else {
-          app.log("failed result check");
-        }
-      });
+   
     return;
   });
 
