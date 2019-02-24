@@ -88,6 +88,7 @@ module.exports = app => {
       contract_address +
       ").";
     const comment = context.issue({ body: bodyComment });
+    app.log(bodyComment);
     contract.methods
       .repo(hex_repo_id)
       .call()
