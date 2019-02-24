@@ -72,7 +72,8 @@ module.exports = app => {
           const noRepoComment = context.issue({ body: bodyNoRepoComment });
           return context.github.issues.createComment(noRepoComment);
         } 
-    });
+    }
+  });
 
     app.log("passed init check");
 
