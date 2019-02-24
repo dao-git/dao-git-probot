@@ -60,11 +60,9 @@ module.exports = app => {
     var hex_repo_id = web3.utils.fromAscii(repo_id);
     var bodyComment = "Hello contributors! \n";
     var pull_request_id = context.payload.pull_request.number;
-    app.log(repo_id);
     var split_repo_id = repo_id.split("/");
     const owner = split_repo_id[0];
     const repo = split_repo_id[1];
-    app.log(hex_repo_id);
     const anon = 0; //We dont want to out anonymous contributors
     const contributors = await context.github.repos
       .listContributors({
@@ -78,7 +76,7 @@ module.exports = app => {
         });
       });
 
-   
+  
     var contract = new web3.eth.Contract(contract_interface, contract_address);
     contract.methods
     .repo(hex_repo_id)
@@ -86,9 +84,11 @@ module.exports = app => {
     .then(result => {
       if (result) {
 
-       app.log("got result from initilization check");
+       app.log("got result from initialization check");
 
         app.log(result);
+
+        app.log(result[1]);
         // Check if repo has been initialized
         if (result[1] === 0) {
           app.log("no init");
