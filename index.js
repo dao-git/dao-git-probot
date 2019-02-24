@@ -103,6 +103,8 @@ module.exports = app => {
           } else {
             return context.github.issues.createComment(comment);
           }
+        } else {
+          app.log("failed result check");
         }
       });
     return;
