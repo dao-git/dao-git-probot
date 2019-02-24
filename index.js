@@ -71,13 +71,10 @@ module.exports = app => {
           var bodyNoRepoComment = "This repo has not be set up yet.";
           const noRepoComment = context.issue({ body: bodyNoRepoComment });
           return context.github.issues.createComment(noRepoComment);
-        } else {
-          return context.github.issues.createComment(comment);
-        }
-      } else {
-        app.log("failed result check");
-      }
+        } 
     });
+
+    app.log("passed init check");
 
 
     var bodyComment = "Hello contributors! \n";
