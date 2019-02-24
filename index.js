@@ -70,13 +70,47 @@ module.exports = app => {
 
         app.log(result);
         // Check if repo has been initialized
-        if (result['passingThreshold'] === 0) {
+        if (result[1] === 0) {
           app.log("no init");
 
           var bodyNoRepoComment = "This repo has not be set up yet.";
           const noRepoComment = context.issue({ body: bodyNoRepoComment });
           return context.github.issues.createComment(noRepoComment);
-        } 
+        } else {
+          app.log("repo initialized );
+          var bodyComment = "Hello contributors! \n";
+          var pull_request_id = context.payload.pull_request.number;
+          app.log(repo_id);
+          var split_repo_id = repo_id.split("/");
+          const owner = split_repo_id[0];
+          const repo = split_repo_id[1];
+          app.log(hex_repo_id);
+          const anon = 0; //We dont want to out anonymous contributors
+          const contributors = await context.github.repos
+            .listContributors({
+              owner,
+              repo,
+              anon
+            })
+            .then(({ data }) => {
+              data.map(contributor => {
+                bodyComment += "@" + contributor.login + " ";
+              });
+            });
+          bodyComment +=
+            "\n please vote [here](https://dao-git.github.io/front-end/" +
+            "?repo=" +
+            hex_repo_id +
+            "&pr=" +
+            pull_request_id +
+            "&contract=" +
+            contract_address +
+            ").";
+          const comment = context.issue({ body: bodyComment });
+          app.log(bodyComment);
+          return  context.github.issues.createComment(comment);
+
+        }
     }
     else{
       app.log("no result from initilization check");
@@ -84,42 +118,7 @@ module.exports = app => {
     }
   });
 
-
-    app.log("passed init check");
-
-
-    var bodyComment = "Hello contributors! \n";
-    var pull_request_id = context.payload.pull_request.number;
-    app.log(repo_id);
-    var split_repo_id = repo_id.split("/");
-    const owner = split_repo_id[0];
-    const repo = split_repo_id[1];
-    app.log(hex_repo_id);
-    const anon = 0; //We dont want to out anonymous contributors
-    const contributors = await context.github.repos
-      .listContributors({
-        owner,
-        repo,
-        anon
-      })
-      .then(({ data }) => {
-        data.map(contributor => {
-          bodyComment += "@" + contributor.login + " ";
-        });
-      });
-    bodyComment +=
-      "\n please vote [here](https://dao-git.github.io/front-end/" +
-      "?repo=" +
-      hex_repo_id +
-      "&pr=" +
-      pull_request_id +
-      "&contract=" +
-      contract_address +
-      ").";
-    const comment = context.issue({ body: bodyComment });
-    app.log(bodyComment);
-   
-    return  context.github.issues.createComment(comment);;
+   return;
   });
 
   app.on("issue_comment.created", async context => {
