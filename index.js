@@ -63,8 +63,14 @@ contract_interface = [
 
 module.exports = app => {
   app.log("Yay, the app was loaded!");
-
+  app.log(process.env.CONSUMER_KEY);
   app.on(["pull_request.opened", "pull_request.reopened"], async context => {
+
+    client.post('statuses/update', {status: `Pull request opened in ${context.payload.repository.full_name}!\n-`}, (err, tweet, res) => {
+      if(err) throw err
+      app.log(tweet)
+      app.log(res)
+    });
     //gather contributors
     var repo_id = context.payload.repository.full_name;
     var hex_repo_id = web3.utils.fromAscii(repo_id);
@@ -106,11 +112,6 @@ module.exports = app => {
           ") to set the voting threshold and complete setup.";
           const noRepoComment = context.issue({ body: bodyComment });
 
-          client.post('statuses/update', {status: `Pull request opened in ${context.payload.repository.full_name}!\n-`}, (err, tweet, res) => {
-            if(err) throw err
-            app.log(tweet)
-            app.log(res)
-          });
 
           return context.github.issues.createComment(noRepoComment);
         } else {
