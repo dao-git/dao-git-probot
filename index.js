@@ -70,7 +70,7 @@ module.exports = app => {
 
         app.log(result);
         // Check if repo has been initialized
-        if (result[1] === 0) {
+        if (result['passingThreshold'] === 0) {
           app.log("no init");
 
           var bodyNoRepoComment = "This repo has not be set up yet.";
