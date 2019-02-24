@@ -117,7 +117,6 @@ module.exports = app => {
    return;
   });
 
-
   //check if voting threshold is passed on every comment, if so, merge
   app.on("issue_comment.created", async context => {
     var contract = new web3.eth.Contract(contract_interface, contract_address);
