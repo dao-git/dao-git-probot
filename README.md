@@ -1,8 +1,8 @@
-# dao-git-probot
+# Code DAO's
 
-### Made at ETHDenver2019, check out our submission [here](https://kauri.io/article/a20c2d43ab954852a48227c5dd4eed99/v6/allow-your-community-to-manage-your-code-using-a-dao!)!
+### Allow your community to manage your github repository using a DAO!  Made at ETHDenver2019, check out our submission [here](https://kauri.io/article/a20c2d43ab954852a48227c5dd4eed99/v6/allow-your-community-to-manage-your-code-using-a-dao!)!
 
-Allow your community to manage your code using a DAO!
+
 
 ## How to Contribute
 
@@ -18,7 +18,12 @@ Allow your community to manage your code using a DAO!
 | `votingThreshold` | 1 |
 
 ## Setup
+Add this bot to your github repository:
 
+https://github.com/apps/dao-git-probot
+
+
+## Development
 ```sh
 # Install dependencies
 npm install

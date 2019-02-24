@@ -1,5 +1,6 @@
 const Web3 = require('web3')
 const web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/'))
+const contract_address = '0xD9A37024b41f0c13cF85eeADcaE257181b965da3';
 
 module.exports = app => {
   app.log('Yay, the app was loaded!')
@@ -21,18 +22,21 @@ module.exports = app => {
       data.map(contributor => {
         bodyComment += '@' + contributor.login + ' '
       })
-    })
-    bodyComment += '\n please vote [here](https://dao-git.github.io/fe/?repo=' +
-                  hexRepoId +
-                  '&pr=' +
-                  pullRequestId +
-                  ').'
-    const comment = context.issue({ body: bodyComment })
-    return context.github.issues.createComment(comment)
+
+      bodyComment += "\n please vote [here](https://dao-git.github.io/front-end/"
+                  +"?repo="
+                  +hex_repo_id
+                  +"&pr="
+                  +pull_request_id
+                  +"&contract="
+                  +contract_address
+                  +")."
+      const comment = context.issue({body: bodyComment})
+      return context.github.issues.createComment(comment)
   })
 
   app.on('issue_comment.created', async context => {
-    var contractAddress = '0x3538716fd0f6bf656cbf12506ba4cc73979d3503'
+ 
     var contract = new web3.eth.Contract(
       [{
         'constant': true,
