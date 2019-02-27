@@ -99,7 +99,7 @@ module.exports = app => {
         if (result[1] == 0) { //voting threshold
           bodyComment += "\n This repository has not been initialized yet. ";
           bodyComment +=
-          "Please click [here](https://dao-git.github.io/front-end/initialize.html" +
+          "Please click [here](https://dao-git.github.io/front-end/initialize" +
           "?repo=" +
           hex_repo_id +
           "&contract=" +
@@ -115,6 +115,13 @@ module.exports = app => {
             hex_repo_id +
             "&pr=" +
             pull_request_id +
+            "&contract=" +
+            contract_address +
+            ").";
+            bodyComment +=
+            " Maintain whitelisted addresses [here](https://dao-git.github.io/front-end/whitelist" +
+            "?repo=" +
+            hex_repo_id +
             "&contract=" +
             contract_address +
             ").";
