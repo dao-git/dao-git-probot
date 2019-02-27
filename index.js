@@ -3,7 +3,7 @@ const Twitter = require('twitter')
 const web3 = new Web3(
   new Web3.providers.HttpProvider("https://rinkeby.infura.io/")
 );
-const contract_address = "0xD9A37024b41f0c13cF85eeADcaE257181b965da3";
+const contract_address = process.env.DAO_CONTRACT;
 
 var client = new Twitter({
   consumer_key: process.env.CONSUMER_KEY,
