@@ -1,6 +1,6 @@
 # Code DAO's
 
-### Allow your community to manage your code using a [DAO]([DAO](https://en.wikipedia.org/wiki/Decentralized_autonomous_organization))! Pull requests are automatically merged using a set-and-forget voting contract and a Github bot(https://github.com/apps/dao-git-probot).
+### Allow your community to manage your code using a [DAO]([DAO](https://en.wikipedia.org/wiki/Decentralized_autonomous_organization))! Pull requests are automatically merged using a set-and-forget voting contract and a [Github bot](https://github.com/apps/dao-git-probot).
 
 ## Getting Started
 1. Install the [Code DAO bot](https://github.com/apps/dao-git-probot) to your github repository. 
